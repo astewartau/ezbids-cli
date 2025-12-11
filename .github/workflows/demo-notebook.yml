@@ -1,0 +1,57 @@
+name: Run Demo Notebook
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'notebooks/**'
+      - '.github/workflows/demo-notebook.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  run-notebook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dcm2niix
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dcm2niix
+
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install jupyter nbconvert
+
+      - name: Run notebook
+        run: |
+          cd notebooks
+          jupyter nbconvert --to notebook --execute demo_ukb_dicoms.ipynb --output demo_ukb_dicoms_executed.ipynb --ExecutePreprocessor.timeout=600
+
+      - name: Convert to HTML
+        run: |
+          cd notebooks
+          jupyter nbconvert --to html demo_ukb_dicoms_executed.ipynb --output index.html
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: notebook-output
+          path: notebooks/index.html
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./notebooks
+          publish_branch: gh-pages
+          keep_files: false
+          include_files: 'index.html'
