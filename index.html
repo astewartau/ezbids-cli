@@ -7928,13 +7928,7 @@ fmap/epi: ['direction']
 <span class="ansi-blue-intense-fg ansi-bold">Output:</span> demo_data/bids_output
 <span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Analyzing data<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">1</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Discovering files<span class="ansi-yellow-fg">...</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
+DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
 Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta-intense-fg">dcm2niix</span> -z y -f time-%t-sn-%s -o 
 demo_data/bids_output/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg ansi-bold">9</span> -ba n demo_data/dicoms
 </pre>
@@ -7948,17 +7942,18 @@ Found <span class="ansi-cyan-intense-fg ansi-bold">4</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
+<span class="ansi-green-fg">Analysis saved to demo_data/bids_output/.ezbids_work/ezBIDS_core.json</span>
+<span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Converting to BIDS<span class="ansi-yellow-fg">...</span>
+Creating BIDS dataset: demo_data/bids_output/dataset
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Analysis saved to demo_data/bids_output/.ezbids_work/ezBIDS_core.json</span>
-<span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Converting to BIDS<span class="ansi-yellow-fg">...</span>
-Creating BIDS dataset: demo_data/bids_output/dataset
-<span class="ansi-green-fg">BIDS dataset created: demo_data/bids_output/dataset</span>
+<pre><span class="ansi-green-fg">BIDS dataset created: demo_data/bids_output/dataset</span>
 <span class="ansi-bold">Validating BIDS output</span><span class="ansi-yellow-intense-fg ansi-bold">...</span>
+<span class="ansi-green-fg">✓ Dataset is BIDS valid!</span> <span class="ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">12</span> files checked<span class="ansi-bold">)</span>
 <span class="ansi-green-intense-fg ansi-bold">Conversion complete:</span> demo_data/bids_output
 </pre>
 </div>
@@ -8215,7 +8210,7 @@ Found 1 subjects
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Validate-the-BIDS-Dataset">Validate the BIDS Dataset<a class="anchor-link" href="#Validate-the-BIDS-Dataset">¶</a></h2><p>If you have the BIDS validator installed, you can validate the output:</p>
+<h2 id="Validate-the-BIDS-Dataset">Validate the BIDS Dataset<a class="anchor-link" href="#Validate-the-BIDS-Dataset">¶</a></h2><p>ezBIDS CLI includes the <code>bids-validator</code> Python package for validating BIDS compliance:</p>
 </div>
 </div>
 </div>
@@ -8227,14 +8222,16 @@ Found 1 subjects
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Check if bids-validator is available</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ezbids_cli.validation.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_dataset</span><span class="p">,</span> <span class="n">print_validation_result</span>
 
-<span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"bids-validator"</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Running BIDS validator..."</span><span class="p">)</span>
-    <span class="o">!</span>bids-validator<span class="w"> </span><span class="o">{</span>BIDS_DIR<span class="o">}</span>/*<span class="w"> </span>--verbose
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"bids-validator not found. Install with: npm install -g bids-validator"</span><span class="p">)</span>
+<span class="c1"># Find the BIDS dataset directory</span>
+<span class="n">bids_dataset</span> <span class="o">=</span> <span class="n">BIDS_DIR</span> <span class="o">/</span> <span class="s2">"dataset"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">bids_dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">bids_dataset</span> <span class="o">=</span> <span class="n">BIDS_DIR</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Validating: </span><span class="si">{</span><span class="n">bids_dataset</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">validate_dataset</span><span class="p">(</span><span class="n">bids_dataset</span><span class="p">)</span>
+<span class="n">print_validation_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8247,7 +8244,15 @@ Found 1 subjects
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>bids-validator not found. Install with: npm install -g bids-validator
+<pre>Validating: demo_data/bids_output/dataset
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">✓ Dataset is BIDS valid!</span> <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">12</span> files checked<span style="font-weight: bold">)</span>
 </pre>
 </div>
 </div>
