@@ -123,7 +123,14 @@ def convert(
 
     if not skip_validation:
         console.print("[bold]Validating BIDS output...")
-        # TODO: Run bids-validator
+        from ezbids_cli.validation.validator import print_validation_result, validate_dataset
+
+        bids_dataset_dir = output_dir / "dataset"
+        if bids_dataset_dir.exists():
+            result = validate_dataset(bids_dataset_dir)
+        else:
+            result = validate_dataset(output_dir)
+        print_validation_result(result, verbose=ctx.obj.get("verbose", 0) > 0)
 
     console.print(f"[bold green]Conversion complete:[/] {output_dir}")
 
@@ -231,17 +238,11 @@ def validate(ctx: click.Context, bids_dir: Path) -> None:
 
     BIDS_DIR is the root directory of the BIDS dataset.
     """
-    from ezbids_cli.validation.validator import run_validator
+    from ezbids_cli.validation.validator import print_validation_result, validate_dataset
 
     console.print(f"[bold blue]Validating:[/] {bids_dir}")
-    result = run_validator(bids_dir)
-
-    if result["valid"]:
-        console.print("[bold green]Dataset is valid BIDS!")
-    else:
-        console.print("[bold red]Validation errors found:")
-        for error in result.get("errors", []):
-            console.print(f"  - {error}")
+    result = validate_dataset(bids_dir)
+    print_validation_result(result, verbose=ctx.obj.get("verbose", 0) > 0)
 
 
 if __name__ == "__main__":
