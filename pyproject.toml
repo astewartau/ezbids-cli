@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ezbids-cli"
+version = "0.1.0"
+description = "Command-line tool for converting neuroimaging data to BIDS format"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "ezBIDS Team" }
+]
+keywords = ["bids", "neuroimaging", "mri", "dicom", "nifti", "converter"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "textual>=0.40",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "nibabel>=5.0",
+    "pydicom>=2.4",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "natsort>=8.0",
+    "bidsschematools>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "mypy>=1.0",
+    "ruff>=0.1",
+]
+
+[project.scripts]
+ezbids = "ezbids_cli.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/brainlife/ezbids-cli"
+Repository = "https://github.com/brainlife/ezbids-cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ezbids_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+ignore_missing_imports = true
