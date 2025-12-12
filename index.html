@@ -7520,7 +7520,7 @@ a.anchor-link {
 <h1 id="ezBIDS-CLI-Demo:-UK-Biobank-Example-DICOMs">ezBIDS CLI Demo: UK Biobank Example DICOMs<a class="anchor-link" href="#ezBIDS-CLI-Demo:-UK-Biobank-Example-DICOMs">¶</a></h1><p>This notebook demonstrates converting DICOM data to BIDS format using <code>ezbids-cli</code>.</p>
 <p>We'll showcase:</p>
 <ul>
-<li><strong>Multi-modality conversion</strong>: T1w, FLAIR, resting-state fMRI, and DWI</li>
+<li><strong>Multi-modality conversion</strong>: T1w, FLAIR, T2*w (SWI), resting-state fMRI, and DWI</li>
 <li><strong>Automatic detection</strong>: How ezbids identifies datatypes, suffixes, and entities</li>
 <li><strong>Two-stage workflow</strong>: Analyze data, review, then apply conversion</li>
 <li><strong>Configuration files</strong>: Reusable settings for consistent conversions</li>
@@ -7613,7 +7613,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Download-UK-Biobank-Example-DICOMs">2. Download UK Biobank Example DICOMs<a class="anchor-link" href="#2.-Download-UK-Biobank-Example-DICOMs">¶</a></h2><p>UK Biobank provides publicly accessible example DICOM datasets. We'll download four modalities to demonstrate multi-modal conversion:</p>
+<h2 id="2.-Download-UK-Biobank-Example-DICOMs">2. Download UK Biobank Example DICOMs<a class="anchor-link" href="#2.-Download-UK-Biobank-Example-DICOMs">¶</a></h2><p>UK Biobank provides publicly accessible example DICOM datasets. We'll download five modalities to demonstrate multi-modal conversion:</p>
 <table>
 <thead>
 <tr>
@@ -7632,6 +7632,11 @@ a.anchor-link {
 <td>T2 FLAIR</td>
 <td>anat/FLAIR</td>
 <td>Fluid-attenuated inversion recovery</td>
+</tr>
+<tr>
+<td>SWI</td>
+<td>anat/T2starw</td>
+<td>Susceptibility-weighted imaging</td>
 </tr>
 <tr>
 <td>Resting fMRI</td>
@@ -7698,8 +7703,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Download all four modalities</span>
-<span class="n">datasets_to_download</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"t2flair"</span><span class="p">,</span> <span class="s2">"rest_fmri"</span><span class="p">,</span> <span class="s2">"dwi"</span><span class="p">]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Download all five modalities</span>
+<span class="n">datasets_to_download</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"t2flair"</span><span class="p">,</span> <span class="s2">"swi"</span><span class="p">,</span> <span class="s2">"rest_fmri"</span><span class="p">,</span> <span class="s2">"dwi"</span><span class="p">]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Downloading UK Biobank example DICOMs...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">datasets_to_download</span><span class="p">:</span>
@@ -7746,6 +7751,19 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>done (385 files)
+  swi: downloading... </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>extracting... </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>done (6433 files)
   rest_fmri: downloading... </pre>
 </div>
 </div>
@@ -7810,6 +7828,7 @@ Download complete!
 ========================================
   dwi/ (611 files)
   rest_fmri/ (492 files)
+  swi/ (6433 files)
   t1/ (417 files)
   t2flair/ (385 files)
 </pre>
@@ -7884,18 +7903,18 @@ demo_data/bids_output/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg an
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">10</span><span class="ansi-green-fg"> files</span>
-Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
+<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">20</span><span class="ansi-green-fg"> files</span>
+Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
+Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
-<span class="ansi-green-fg">Analysis saved to demo_data/bids_output/.ezbids_work/ezBIDS_core.json</span>
+<pre><span class="ansi-green-fg">Analysis saved to demo_data/bids_output/.ezbids_work/ezBIDS_core.json</span>
 <span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Converting to BIDS<span class="ansi-yellow-fg">...</span>
 Creating BIDS dataset: demo_data/bids_output/dataset
 <span class="ansi-green-fg">BIDS dataset created: demo_data/bids_output/dataset</span>
@@ -7906,7 +7925,40 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">✓ Dataset is BIDS valid!</span> <span class="ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">24</span> files checked<span class="ansi-bold">)</span>
+<pre><span class="ansi-red-fg">✗ Validation errors found</span> <span class="ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">44</span> files checked<span class="ansi-bold">)</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-phase_phase1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-phase_phase1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-phase_phasediff.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-phase_phasediff.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-phase_phasediff.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-mag_magnitude2.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-phase_phase1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz</span>
 <span class="ansi-green-intense-fg ansi-bold">Conversion complete:</span> demo_data/bids_output
 </pre>
 </div>
@@ -7974,6 +8026,26 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 │       ├── time-20180719151557-sn-14.bvec
 │       ├── time-20180719151557-sn-14.json
 │       ├── time-20180719151557-sn-14.nii.gz
+│       ├── time-20180719151557-sn-15_cH31_e2.json
+│       ├── time-20180719151557-sn-15_cH31_e2.nii.gz
+│       ├── time-20180719151557-sn-15_cH8_e1.json
+│       ├── time-20180719151557-sn-15_cH8_e1.nii.gz
+│       ├── time-20180719151557-sn-16_e1.json
+│       ├── time-20180719151557-sn-16_e1.nii.gz
+│       ├── time-20180719151557-sn-16_e2.json
+│       ├── time-20180719151557-sn-16_e2.nii.gz
+│       ├── time-20180719151557-sn-17_e1.json
+│       ├── time-20180719151557-sn-17_e1.nii.gz
+│       ├── time-20180719151557-sn-17_e2.json
+│       ├── time-20180719151557-sn-17_e2.nii.gz
+│       ├── time-20180719151557-sn-18_cH20_e2_ph.json
+│       ├── time-20180719151557-sn-18_cH20_e2_ph.nii.gz
+│       ├── time-20180719151557-sn-18_cH24_e1_ph.json
+│       ├── time-20180719151557-sn-18_cH24_e1_ph.nii.gz
+│       ├── time-20180719151557-sn-19_e1_ph.json
+│       ├── time-20180719151557-sn-19_e1_ph.nii.gz
+│       ├── time-20180719151557-sn-19_e2_ph.json
+│       ├── time-20180719151557-sn-19_e2_ph.nii.gz
 │       ├── time-20180719151557-sn-5.json
 │       ├── time-20180719151557-sn-5.nii.gz
 │       ├── time-20180719151557-sn-6.json
@@ -8009,7 +8081,27 @@ Creating BIDS dataset: demo_data/bids_output/dataset
         │   ├── sub-01_acq-mb3_dir-AP_epi.bval
         │   ├── sub-01_acq-mb3_dir-AP_epi.bvec
         │   ├── sub-01_acq-mb3_dir-AP_epi.json
-        │   └── sub-01_acq-mb3_dir-AP_epi.nii.gz
+        │   ├── sub-01_acq-mb3_dir-AP_epi.nii.gz
+        │   ├── sub-01_dir-RL_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_dir-RL_echo-1_part-phase_phase1.json
+        │   ├── sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz
+        │   ├── sub-01_dir-RL_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_dir-RL_echo-2_part-phase_phasediff.json
+        │   ├── sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz
+        │   ├── sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_echo-1_part-phase_phase1.json
+        │   ├── sub-01_echo-1_part-phase_phase1.nii.gz
+        │   ├── sub-01_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_echo-2_part-phase_phasediff.json
+        │   └── sub-01_echo-2_part-phase_phasediff.nii.gz
         └── func
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.json
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.nii.gz
@@ -8070,6 +8162,16 @@ Creating BIDS dataset: demo_data/bids_output/dataset
   .ezbids_work/nifti/time-20180719151557-sn-12.nii.gz  (104, 104, 72, 6)
   .ezbids_work/nifti/time-20180719151557-sn-13.nii.gz  (104, 104, 72)
   .ezbids_work/nifti/time-20180719151557-sn-14.nii.gz  (104, 104, 72, 105)
+  .ezbids_work/nifti/time-20180719151557-sn-15_cH31_e2.nii.gz  (256, 288, 48, 32)
+  .ezbids_work/nifti/time-20180719151557-sn-15_cH8_e1.nii.gz  (256, 288, 48, 32)
+  .ezbids_work/nifti/time-20180719151557-sn-16_e1.nii.gz  (256, 288, 48)
+  .ezbids_work/nifti/time-20180719151557-sn-16_e2.nii.gz  (256, 288, 48)
+  .ezbids_work/nifti/time-20180719151557-sn-17_e1.nii.gz  (256, 288, 48)
+  .ezbids_work/nifti/time-20180719151557-sn-17_e2.nii.gz  (256, 288, 48)
+  .ezbids_work/nifti/time-20180719151557-sn-18_cH20_e2_ph.nii.gz  (256, 288, 48, 32)
+  .ezbids_work/nifti/time-20180719151557-sn-18_cH24_e1_ph.nii.gz  (256, 288, 48, 32)
+  .ezbids_work/nifti/time-20180719151557-sn-19_e1_ph.nii.gz  (256, 288, 48)
+  .ezbids_work/nifti/time-20180719151557-sn-19_e2_ph.nii.gz  (256, 288, 48)
   .ezbids_work/nifti/time-20180719151557-sn-5.nii.gz  (208, 256, 256)
   .ezbids_work/nifti/time-20180719151557-sn-6.nii.gz  (208, 256, 256)
   .ezbids_work/nifti/time-20180719151557-sn-7.nii.gz  (88, 88, 64)
@@ -8081,6 +8183,22 @@ Creating BIDS dataset: demo_data/bids_output/dataset
   dataset/sub-01/anat/sub-01_run-02_part-mag_T1w.nii.gz  (208, 256, 256)
   dataset/sub-01/dwi/sub-01_acq-mb3_dwi.nii.gz  (104, 104, 72, 105)
   dataset/sub-01/fmap/sub-01_acq-mb3_dir-AP_epi.nii.gz  (104, 104, 72, 6)
+  dataset/sub-01/fmap/sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz  (256, 288, 48)
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  dataset/sub-01/fmap/sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz  (256, 288, 48)
+  dataset/sub-01/fmap/sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz  (256, 288, 48)
+  dataset/sub-01/fmap/sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz  (256, 288, 48)
+  dataset/sub-01/fmap/sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz  (256, 288, 48)
+  dataset/sub-01/fmap/sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz  (256, 288, 48)
+  dataset/sub-01/fmap/sub-01_echo-1_part-mag_magnitude1.nii.gz  (256, 288, 48, 32)
+  dataset/sub-01/fmap/sub-01_echo-1_part-phase_phase1.nii.gz  (256, 288, 48, 32)
+  dataset/sub-01/fmap/sub-01_echo-2_part-mag_magnitude2.nii.gz  (256, 288, 48, 32)
+  dataset/sub-01/fmap/sub-01_echo-2_part-phase_phasediff.nii.gz  (256, 288, 48, 32)
   dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_bold.nii.gz  (88, 88, 64, 490)
   dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_sbref.nii.gz  (88, 88, 64)
 </pre>
@@ -8193,12 +8311,29 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># View the SWI scan (T2*-weighted)</span>
+<span class="n">swi_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">nifti_files</span> <span class="k">if</span> <span class="s2">"T2starw"</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">swi_files</span><span class="p">:</span>
+    <span class="n">plot_slices</span><span class="p">(</span><span class="n">swi_files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="n">swi_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># View the resting-state fMRI (first volume of 4D)</span>
@@ -8227,7 +8362,7 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># View the DWI scan (first volume of 4D)</span>
@@ -8267,7 +8402,7 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ezbids_cli.core.analyzer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Analyzer</span>
@@ -8313,14 +8448,14 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">Converted </span><span style="color: #008000; text-decoration-color: #008000; font-weight: bold">10</span><span style="color: #008000; text-decoration-color: #008000"> files</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">Converted </span><span style="color: #008000; text-decoration-color: #008000; font-weight: bold">20</span><span style="color: #008000; text-decoration-color: #008000"> files</span>
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Found </span><span style="color: #7fbfbf; text-decoration-color: #7fbfbf; font-weight: bold">10</span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> NIfTI files</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Found </span><span style="color: #7fbfbf; text-decoration-color: #7fbfbf; font-weight: bold">20</span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> NIfTI files</span>
 </pre>
 </div>
 </div>
@@ -8358,7 +8493,7 @@ Creating BIDS dataset: demo_data/bids_output/dataset
 <pre>Analysis Summary
 ==================================================
 Subjects found: 1
-Acquisitions found: 10
+Acquisitions found: 20
 </pre>
 </div>
 </div>
@@ -8369,7 +8504,7 @@ Acquisitions found: 10
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Show detailed detection results for each acquisition</span>
@@ -8459,6 +8594,56 @@ Acquisitions found: 10
     Series: diff_AP_MPopt_MB3_50b1000_50b2000_8b0_lowflip_SBRef
     Entities: acquisition=mb3, part=mag
     Note: Could not automatically identify datatype/suffix
+
+[11] fmap/magnitude1
+    Series: SWI_3mm_Updated_v1.1
+    Entities: echo=1, part=mag
+    Note: Identified as fmap/magnitude1
+
+[12] fmap/magnitude1
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=1, part=mag
+    Note: Identified as fmap/magnitude1
+
+[13] fmap/magnitude1
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=1, part=mag
+    Note: Identified as fmap/magnitude1
+
+[14] fmap/phase1
+    Series: SWI_3mm_Updated_v1.1
+    Entities: echo=1, part=phase
+    Note: Identified as fmap/phase1
+
+[15] fmap/phase1
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=1, part=phase
+    Note: Identified as fmap/phase1
+
+[16] fmap/magnitude2
+    Series: SWI_3mm_Updated_v1.1
+    Entities: echo=2, part=mag
+    Note: Identified as fmap/magnitude2
+
+[17] fmap/magnitude2
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=2, part=mag
+    Note: Identified as fmap/magnitude2
+
+[18] fmap/magnitude2
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=2, part=mag
+    Note: Identified as fmap/magnitude2
+
+[19] fmap/phasediff
+    Series: SWI_3mm_Updated_v1.1
+    Entities: echo=2, part=phase
+    Note: Identified as fmap/phasediff
+
+[20] fmap/phasediff
+    Series: SWI_3mm_Updated_v1.1
+    Entities: direction=RL, echo=2, part=phase
+    Note: Identified as fmap/phasediff
 </pre>
 </div>
 </div>
@@ -8469,7 +8654,7 @@ Acquisitions found: 10
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Examine the JSON sidecar for one acquisition</span>
@@ -8553,7 +8738,7 @@ Acquisitions found: 10
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Clean previous analysis output to avoid duplicates</span>
@@ -8593,11 +8778,17 @@ Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">10</span><span class="ansi-green-fg"> files</span>
-Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
+<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">20</span><span class="ansi-green-fg"> files</span>
+Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
-Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
 <span class="ansi-green-fg">Analysis saved to demo_data/analysis/ezBIDS_core.json</span>
 <span class="ansi-green-intense-fg ansi-bold">Analysis complete:</span> demo_data/analysis/ezBIDS_core.json
 </pre>
@@ -8610,7 +8801,7 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cya
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Show the analysis output files</span>
@@ -8634,7 +8825,7 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cya
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Analysis output files:
 ----------------------------------------
-  ezBIDS_core.json (70.5 KB)
+  ezBIDS_core.json (127.8 KB)
 </pre>
 </div>
 </div>
@@ -8645,7 +8836,7 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cya
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Load and inspect the analysis JSON</span>
@@ -8695,8 +8886,8 @@ Add license information here.
   subjects: [1 items]
   participantsColumn: {...}
   participantsInfo: {...}
-  series: [10 items]
-  objects: [10 items]
+  series: [20 items]
+  objects: [20 items]
   events: {...}
   BIDSURI: False
 </pre>
@@ -8709,7 +8900,7 @@ Add license information here.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># You could modify the analysis here programmatically</span>
@@ -8751,7 +8942,7 @@ To use the interactive TUI reviewer, run:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Stage 2: Apply the analysis to create BIDS output</span>
@@ -8793,7 +8984,7 @@ To use the interactive TUI reviewer, run:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Verify the staged output matches</span>
@@ -8840,7 +9031,27 @@ To use the interactive TUI reviewer, run:
         │   ├── sub-01_acq-mb3_dir-AP_epi.bval
         │   ├── sub-01_acq-mb3_dir-AP_epi.bvec
         │   ├── sub-01_acq-mb3_dir-AP_epi.json
-        │   └── sub-01_acq-mb3_dir-AP_epi.nii.gz
+        │   ├── sub-01_acq-mb3_dir-AP_epi.nii.gz
+        │   ├── sub-01_dir-RL_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_dir-RL_echo-1_part-phase_phase1.json
+        │   ├── sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz
+        │   ├── sub-01_dir-RL_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_dir-RL_echo-2_part-phase_phasediff.json
+        │   ├── sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz
+        │   ├── sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_echo-1_part-mag_magnitude1.json
+        │   ├── sub-01_echo-1_part-mag_magnitude1.nii.gz
+        │   ├── sub-01_echo-1_part-phase_phase1.json
+        │   ├── sub-01_echo-1_part-phase_phase1.nii.gz
+        │   ├── sub-01_echo-2_part-mag_magnitude2.json
+        │   ├── sub-01_echo-2_part-mag_magnitude2.nii.gz
+        │   ├── sub-01_echo-2_part-phase_phasediff.json
+        │   └── sub-01_echo-2_part-phase_phasediff.nii.gz
         └── func
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.json
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.nii.gz
@@ -8873,7 +9084,7 @@ To use the interactive TUI reviewer, run:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Generate a config file from existing analysis</span>
@@ -8892,7 +9103,13 @@ To use the interactive TUI reviewer, run:
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre><span class="ansi-blue-intense-fg ansi-bold">Analyzing:</span> demo_data/dicoms
 Step <span class="ansi-cyan-intense-fg ansi-bold">1</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Discovering files<span class="ansi-yellow-fg">...</span>
-DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
 Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta-intense-fg">dcm2niix</span> -z y -f time-%t-sn-%s -o 
 demo_data/dicoms/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg ansi-bold">9</span> -ba n demo_data/dicoms
 </pre>
@@ -8901,8 +9118,8 @@ demo_data/dicoms/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg ansi-bo
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">10</span><span class="ansi-green-fg"> files</span>
-Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
+<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">20</span><span class="ansi-green-fg"> files</span>
+Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
@@ -8924,7 +9141,7 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cya
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># View the generated config</span>
@@ -9011,6 +9228,82 @@ series:
     acquisition: mb3
 - match:
     series_description: .*diff_AP_MPopt_MB3_50b1000_50b2000_8b0_lowflip_SBRef.*
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude1
+  entities:
+    echo: '1'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude1
+  entities:
+    direction: RL
+    echo: '1'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude1
+  entities:
+    direction: RL
+    echo: '1'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: phase1
+  entities:
+    echo: '1'
+    part: phase
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: phase1
+  entities:
+    direction: RL
+    echo: '1'
+    part: phase
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude2
+  entities:
+    echo: '2'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude2
+  entities:
+    direction: RL
+    echo: '2'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: magnitude2
+  entities:
+    direction: RL
+    echo: '2'
+    part: mag
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: phasediff
+  entities:
+    echo: '2'
+    part: phase
+- match:
+    series_description: .*SWI_3mm_Updated_v1\.1.*
+  datatype: fmap
+  suffix: phasediff
+  entities:
+    direction: RL
+    echo: '2'
+    part: phase
 output:
   link_mode: hardlink
   validate: true
@@ -9025,7 +9318,7 @@ output:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Example: Create a custom config</span>
@@ -9097,7 +9390,7 @@ output:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Convert using the custom config</span>
@@ -9128,18 +9421,18 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">1</span>/<span class="ansi-cya
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
-Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
-Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
-Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
-Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
+<pre>Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
+Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Analysis saved to demo_data/bids_from_config/.ezbids_work/ezBIDS_core.json</span>
+<pre>Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
+Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
+Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
+<span class="ansi-green-fg">Analysis saved to demo_data/bids_from_config/.ezbids_work/ezBIDS_core.json</span>
 <span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Converting to BIDS<span class="ansi-yellow-fg">...</span>
 Creating BIDS dataset: demo_data/bids_from_config/dataset
 <span class="ansi-green-fg">BIDS dataset created: demo_data/bids_from_config/dataset</span>
@@ -9150,7 +9443,40 @@ Creating BIDS dataset: demo_data/bids_from_config/dataset
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">✓ Dataset is BIDS valid!</span> <span class="ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">24</span> files checked<span class="ansi-bold">)</span>
+<pre><span class="ansi-red-fg">✗ Validation errors found</span> <span class="ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">44</span> files checked<span class="ansi-bold">)</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-phase_phase1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-phase_phase1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-phase_phasediff.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-mag_magnitude1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-phase_phasediff.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-phase_phasediff.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-2_part-mag_magnitude2.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-mag_magnitude2.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span><span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_echo-1_part-phase_phase1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-1_part-mag_magnitude1.json</span>
+  <span class="ansi-red-fg">• Invalid BIDS filename: </span>
+<span class="ansi-red-fg">/sub-01/fmap/</span><span class="ansi-red-fg">sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz</span>
 <span class="ansi-green-intense-fg ansi-bold">Conversion complete:</span> demo_data/bids_from_config
 </pre>
 </div>
@@ -9173,7 +9499,7 @@ Creating BIDS dataset: demo_data/bids_from_config/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ezbids_cli.validation.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_dataset</span><span class="p">,</span> <span class="n">print_validation_result</span>
@@ -9209,7 +9535,147 @@ Path: demo_data/bids_output/dataset
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">✓ Dataset is BIDS valid!</span> <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">24</span> files checked<span style="font-weight: bold">)</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800000; text-decoration-color: #800000">✗ Validation errors found</span> <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">44</span> files checked<span style="font-weight: bold">)</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-1_part-mag_magnitude1.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-1_part-phase_phase1.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-1_part-phase_phase1.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-2_part-mag_magnitude2.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-2_part-phase_phasediff.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-1_part-mag_magnitude1.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-1_part-mag_magnitude1.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-2_part-phase_phasediff.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-2_part-phase_phasediff.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-2_part-mag_magnitude2.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-2_part-phase_phasediff.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-2_part-mag_magnitude2.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_run-02_echo-1_part-mag_magnitude1.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_run-02_echo-2_part-mag_magnitude2.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_echo-1_part-phase_phase1.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-1_part-phase_phase1.nii.gz</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-1_part-mag_magnitude1.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /sub-01/fmap/sub-01_dir-RL_echo-2_part-mag_magnitude2.nii.gz</span>
 </pre>
 </div>
 </div>
@@ -9220,7 +9686,7 @@ Path: demo_data/bids_output/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># You can also validate from the command line:</span>
@@ -9246,7 +9712,7 @@ Path: demo_data/bids_output/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># dataset_description.json</span>
@@ -9313,7 +9779,7 @@ Path: demo_data/bids_output/dataset
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># participants.tsv</span>
@@ -9362,7 +9828,7 @@ sub-01	n/a	n/a	n/a	n/a
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Uncomment to clean up all demo data</span>
@@ -9385,7 +9851,7 @@ sub-01	n/a	n/a	n/a	n/a
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Demo data size: 2.5G	demo_data
+<pre>Demo data size: 5.6G	demo_data
 </pre>
 </div>
 </div>
