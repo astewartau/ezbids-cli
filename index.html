@@ -7888,7 +7888,13 @@ demo_data/bids_output/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg an
 Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
-Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
 <span class="ansi-green-fg">Analysis saved to demo_data/bids_output/.ezbids_work/ezBIDS_core.json</span>
 <span class="ansi-bold">Step </span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">/</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-bold">:</span> Converting to BIDS<span class="ansi-yellow-fg">...</span>
 Creating BIDS dataset: demo_data/bids_output/dataset
@@ -8371,10 +8377,10 @@ Acquisitions found: 10
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"objects"</span><span class="p">,</span> <span class="p">[]),</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">datatype</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_datatype"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
-    <span class="n">suffix</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_suffix"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
-    <span class="n">bids_type</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span>
-    <span class="n">entities</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_entities"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">datatype</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"datatype"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"suffix"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
+    <span class="n">bids_type</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">datatype</span> <span class="ow">and</span> <span class="n">suffix</span> <span class="k">else</span> <span class="s2">"unidentified"</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"entities"</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">series_desc</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"SeriesDescription"</span><span class="p">,</span> <span class="s2">"N/A"</span><span class="p">)</span>
     
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">bids_type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -8387,8 +8393,8 @@ Acquisitions found: 10
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    Entities: </span><span class="si">{</span><span class="n">entity_str</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     
     <span class="c1"># Show any messages or warnings</span>
-    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_message"</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    Note: </span><span class="si">{</span><span class="n">obj</span><span class="p">[</span><span class="s1">'_message'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"message"</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    Note: </span><span class="si">{</span><span class="n">obj</span><span class="p">[</span><span class="s1">'message'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8404,45 +8410,55 @@ Acquisitions found: 10
 <pre>Detected Acquisitions
 ======================================================================
 
-[1] unknown/unknown
+[1] anat/T1w
     Series: T1_p2_1mm_fov256_sag_TI_880
     Entities: part=mag
+    Note: Identified as anat/T1w
 
-[2] unknown/unknown
+[2] anat/T1w
     Series: T1_p2_1mm_fov256_sag_TI_880
     Entities: part=mag
+    Note: Identified as anat/T1w
 
-[3] unknown/unknown
+[3] func/bold
     Series: MB8_FMRI_fov210_2.4mm_resting
     Entities: task=rest, acquisition=mb8, part=mag
+    Note: Identified as func/bold
 
-[4] unknown/unknown
+[4] func/sbref
     Series: MB8_FMRI_fov210_2.4mm_resting_SBRef
     Entities: task=rest, acquisition=mb8, part=mag
+    Note: Identified as func/sbref
 
-[5] unknown/unknown
+[5] anat/FLAIR
     Series: T2_flair_sag_p2_1mm_FS_ellip_pf78
     Entities: part=mag
+    Note: Identified as anat/FLAIR
 
-[6] unknown/unknown
+[6] anat/FLAIR
     Series: T2_flair_sag_p2_1mm_FS_ellip_pf78
     Entities: part=mag
+    Note: Identified as anat/FLAIR
 
-[7] unknown/unknown
+[7] unidentified
     Series: diff_PA_MPopt_MB3_3b0_lowflip_SBRef
     Entities: acquisition=mb3, part=mag
+    Note: Could not automatically identify datatype/suffix
 
-[8] unknown/unknown
+[8] fmap/epi
     Series: diff_PA_MPopt_MB3_3b0_lowflip
     Entities: direction=AP, acquisition=mb3
+    Note: Reclassified from dwi to fmap/epi (low volume count)
 
-[9] unknown/unknown
+[9] dwi/dwi
     Series: diff_AP_MPopt_MB3_50b1000_50b2000_8b0_lowflip
     Entities: acquisition=mb3
+    Note: Identified as dwi/dwi
 
-[10] unknown/unknown
+[10] unidentified
     Series: diff_AP_MPopt_MB3_50b1000_50b2000_8b0_lowflip_SBRef
     Entities: acquisition=mb3, part=mag
+    Note: Could not automatically identify datatype/suffix
 </pre>
 </div>
 </div>
@@ -8540,7 +8556,12 @@ Acquisitions found: 10
 <div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Stage 1: Analyze and save results</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Clean previous analysis output to avoid duplicates</span>
+<span class="k">if</span> <span class="n">ANALYSIS_DIR</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">ANALYSIS_DIR</span><span class="p">)</span>
+<span class="n">ANALYSIS_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Stage 1: Analyze and save results</span>
 <span class="o">!</span>ezbids<span class="w"> </span>analyze<span class="w"> </span><span class="o">{</span>DICOM_DIR<span class="o">}</span><span class="w"> </span>--output-dir<span class="w"> </span><span class="o">{</span>ANALYSIS_DIR<span class="o">}</span>
 </pre></div>
 </div>
@@ -8557,7 +8578,13 @@ Acquisitions found: 10
 <pre><span class="ansi-blue-intense-fg ansi-bold">Analyzing:</span> demo_data/dicoms
 <span class="ansi-blue-intense-fg ansi-bold">Output:</span> demo_data/analysis
 Step <span class="ansi-cyan-intense-fg ansi-bold">1</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Discovering files<span class="ansi-yellow-fg">...</span>
-DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
 Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta-intense-fg">dcm2niix</span> -z y -f time-%t-sn-%s -o demo_data/analysis/nifti -d 
 <span class="ansi-cyan-intense-fg ansi-bold">9</span> -ba n demo_data/dicoms
 </pre>
@@ -8566,15 +8593,9 @@ Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">20</span><span class="ansi-green-fg"> files</span>
-Found <span class="ansi-cyan-intense-fg ansi-bold">20</span> NIfTI files
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
+<pre><span class="ansi-green-fg">Converted </span><span class="ansi-green-intense-fg ansi-bold">10</span><span class="ansi-green-fg"> files</span>
+Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
+Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
 <span class="ansi-green-fg">Analysis saved to demo_data/analysis/ezBIDS_core.json</span>
@@ -8613,7 +8634,7 @@ Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cya
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Analysis output files:
 ----------------------------------------
-  ezBIDS_core.json (177.9 KB)
+  ezBIDS_core.json (70.5 KB)
 </pre>
 </div>
 </div>
@@ -8675,7 +8696,7 @@ Add license information here.
   participantsColumn: {...}
   participantsInfo: {...}
   series: [10 items]
-  objects: [20 items]
+  objects: [10 items]
   events: {...}
   BIDSURI: False
 </pre>
@@ -8809,42 +8830,22 @@ To use the interactive TUI reviewer, run:
         │   ├── sub-01_run-02_part-mag_FLAIR.json
         │   ├── sub-01_run-02_part-mag_FLAIR.nii.gz
         │   ├── sub-01_run-02_part-mag_T1w.json
-        │   ├── sub-01_run-02_part-mag_T1w.nii.gz
-        │   ├── sub-01_run-03_part-mag_FLAIR.json
-        │   ├── sub-01_run-03_part-mag_FLAIR.nii.gz
-        │   ├── sub-01_run-03_part-mag_T1w.json
-        │   ├── sub-01_run-03_part-mag_T1w.nii.gz
-        │   ├── sub-01_run-04_part-mag_FLAIR.json
-        │   ├── sub-01_run-04_part-mag_FLAIR.nii.gz
-        │   ├── sub-01_run-04_part-mag_T1w.json
-        │   └── sub-01_run-04_part-mag_T1w.nii.gz
+        │   └── sub-01_run-02_part-mag_T1w.nii.gz
         ├── dwi
         │   ├── sub-01_acq-mb3_dwi.bval
         │   ├── sub-01_acq-mb3_dwi.bvec
         │   ├── sub-01_acq-mb3_dwi.json
-        │   ├── sub-01_acq-mb3_dwi.nii.gz
-        │   ├── sub-01_acq-mb3_run-02_dwi.bval
-        │   ├── sub-01_acq-mb3_run-02_dwi.bvec
-        │   ├── sub-01_acq-mb3_run-02_dwi.json
-        │   └── sub-01_acq-mb3_run-02_dwi.nii.gz
+        │   └── sub-01_acq-mb3_dwi.nii.gz
         ├── fmap
         │   ├── sub-01_acq-mb3_dir-AP_epi.bval
         │   ├── sub-01_acq-mb3_dir-AP_epi.bvec
         │   ├── sub-01_acq-mb3_dir-AP_epi.json
-        │   ├── sub-01_acq-mb3_dir-AP_epi.nii.gz
-        │   ├── sub-01_acq-mb3_dir-AP_run-02_epi.bval
-        │   ├── sub-01_acq-mb3_dir-AP_run-02_epi.bvec
-        │   ├── sub-01_acq-mb3_dir-AP_run-02_epi.json
-        │   └── sub-01_acq-mb3_dir-AP_run-02_epi.nii.gz
+        │   └── sub-01_acq-mb3_dir-AP_epi.nii.gz
         └── func
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.json
             ├── sub-01_task-rest_acq-mb8_part-mag_bold.nii.gz
             ├── sub-01_task-rest_acq-mb8_part-mag_sbref.json
-            ├── sub-01_task-rest_acq-mb8_part-mag_sbref.nii.gz
-            ├── sub-01_task-rest_acq-mb8_run-02_part-mag_bold.json
-            ├── sub-01_task-rest_acq-mb8_run-02_part-mag_bold.nii.gz
-            ├── sub-01_task-rest_acq-mb8_run-02_part-mag_sbref.json
-            └── sub-01_task-rest_acq-mb8_run-02_part-mag_sbref.nii.gz
+            └── sub-01_task-rest_acq-mb8_part-mag_sbref.nii.gz
 </pre>
 </div>
 </div>
@@ -8891,13 +8892,7 @@ To use the interactive TUI reviewer, run:
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre><span class="ansi-blue-intense-fg ansi-bold">Analyzing:</span> demo_data/dicoms
 Step <span class="ansi-cyan-intense-fg ansi-bold">1</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Discovering files<span class="ansi-yellow-fg">...</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
+DICOM files detected, running dcm2niix<span class="ansi-yellow-fg">...</span>
 Running: <span class="ansi-magenta-fg">/usr/bin/</span><span class="ansi-magenta-intense-fg">dcm2niix</span> -z y -f time-%t-sn-%s -o 
 demo_data/dicoms/.ezbids_work/nifti -d <span class="ansi-cyan-intense-fg ansi-bold">9</span> -ba n demo_data/dicoms
 </pre>
@@ -8911,7 +8906,13 @@ Found <span class="ansi-cyan-intense-fg ansi-bold">10</span> NIfTI files
 Step <span class="ansi-cyan-intense-fg ansi-bold">2</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Organizing dataset<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">3</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Identifying datatypes and suffixes<span class="ansi-yellow-fg">...</span>
 Step <span class="ansi-cyan-intense-fg ansi-bold">4</span>/<span class="ansi-cyan-intense-fg ansi-bold">4</span>: Extracting entity labels<span class="ansi-yellow-fg">...</span>
-<span class="ansi-green-fg">Analysis saved to demo_data/dicoms/.ezbids_work/ezBIDS_core.json</span>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre><span class="ansi-green-fg">Analysis saved to demo_data/dicoms/.ezbids_work/ezBIDS_core.json</span>
 <span class="ansi-green-intense-fg ansi-bold">Config template created:</span> demo_data/my_config.yaml
 </pre>
 </div>
@@ -9177,11 +9178,14 @@ Creating BIDS dataset: demo_data/bids_from_config/dataset
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ezbids_cli.validation.validator</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_dataset</span><span class="p">,</span> <span class="n">print_validation_result</span>
 
+<span class="c1"># The BIDS dataset is in the 'dataset' subdirectory</span>
+<span class="n">bids_dataset_dir</span> <span class="o">=</span> <span class="n">BIDS_DIR</span> <span class="o">/</span> <span class="s2">"dataset"</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Validating BIDS Dataset"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Path: </span><span class="si">{</span><span class="n">BIDS_DIR</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Path: </span><span class="si">{</span><span class="n">bids_dataset_dir</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">validate_dataset</span><span class="p">(</span><span class="n">BIDS_DIR</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">validate_dataset</span><span class="p">(</span><span class="n">bids_dataset_dir</span><span class="p">)</span>
 <span class="n">print_validation_result</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -9197,7 +9201,7 @@ Creating BIDS dataset: demo_data/bids_from_config/dataset
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Validating BIDS Dataset
 ==================================================
-Path: demo_data/bids_output
+Path: demo_data/bids_output/dataset
 
 </pre>
 </div>
@@ -9205,161 +9209,7 @@ Path: demo_data/bids_output
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800000; text-decoration-color: #800000">✗ Validation errors found</span> <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">24</span> files checked<span style="font-weight: bold">)</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Missing required file: dataset_description.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/dataset_description.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/participants.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/participants.tsv</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/README</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_run-02_part-mag_FLAIR.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_part-mag_T1w.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_run-02_part-mag_T1w.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_part-mag_FLAIR.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_part-mag_T1w.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_part-mag_FLAIR.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_run-02_part-mag_T1w.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/anat/sub-01_run-02_part-mag_FLAIR.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/dwi/sub-01_acq-mb3_dwi.bvec</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/dwi/sub-01_acq-mb3_dwi.bval</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/dwi/sub-01_acq-mb3_dwi.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/dwi/sub-01_acq-mb3_dwi.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_sbref.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_bold.nii.gz</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_sbref.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• Invalid BIDS filename: /dataset/sub-01/func/sub-01_task-rest_acq-mb8_part-mag_bold.json</span>
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">  <span style="color: #800000; text-decoration-color: #800000">• ... and </span><span style="color: #800000; text-decoration-color: #800000; font-weight: bold">4</span><span style="color: #800000; text-decoration-color: #800000"> more invalid files</span>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">✓ Dataset is BIDS valid!</span> <span style="font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">24</span> files checked<span style="font-weight: bold">)</span>
 </pre>
 </div>
 </div>
@@ -9391,7 +9241,7 @@ Path: demo_data/bids_output
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9400,18 +9250,65 @@ Path: demo_data/bids_output
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># dataset_description.json</span>
-<span class="n">desc_file</span> <span class="o">=</span> <span class="n">BIDS_DIR</span> <span class="o">/</span> <span class="s2">"dataset_description.json"</span>
+<span class="n">bids_dataset_dir</span> <span class="o">=</span> <span class="n">BIDS_DIR</span> <span class="o">/</span> <span class="s2">"dataset"</span>
+<span class="n">desc_file</span> <span class="o">=</span> <span class="n">bids_dataset_dir</span> <span class="o">/</span> <span class="s2">"dataset_description.json"</span>
 <span class="k">if</span> <span class="n">desc_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"dataset_description.json"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">desc_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File not found: </span><span class="si">{</span><span class="n">desc_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>dataset_description.json
+========================================
+{
+  "name": "Untitled",
+  "bids_version": "1.9.0",
+  "dataset_type": "raw",
+  "license": "",
+  "authors": [],
+  "acknowledgements": "",
+  "how_to_acknowledge": "",
+  "funding": [],
+  "ethics_approvals": [],
+  "references_and_links": [],
+  "dataset_doi": "",
+  "generated_by": [
+    {
+      "Name": "ezBIDS-cli",
+      "Version": "0.1.0",
+      "CodeURL": "https://github.com/brainlife/ezbids-cli"
+    }
+  ],
+  "Name": "Untitled",
+  "BIDSVersion": "1.10.1",
+  "DatasetType": "raw",
+  "GeneratedBy": [
+    {
+      "Name": "ezBIDS-cli",
+      "Version": "0.1.0",
+      "CodeURL": "https://github.com/brainlife/ezbids-cli"
+    }
+  ]
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9420,12 +9317,31 @@ Path: demo_data/bids_output
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># participants.tsv</span>
-<span class="n">participants_file</span> <span class="o">=</span> <span class="n">BIDS_DIR</span> <span class="o">/</span> <span class="s2">"participants.tsv"</span>
+<span class="n">participants_file</span> <span class="o">=</span> <span class="n">bids_dataset_dir</span> <span class="o">/</span> <span class="s2">"participants.tsv"</span>
 <span class="k">if</span> <span class="n">participants_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"participants.tsv"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">participants_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File not found: </span><span class="si">{</span><span class="n">participants_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>participants.tsv
+========================================
+participant_id	species	sex	age	handedness
+sub-01	n/a	n/a	n/a	n/a
+
+</pre>
 </div>
 </div>
 </div>
@@ -9469,7 +9385,7 @@ Path: demo_data/bids_output
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Demo data size: 3.0G	demo_data
+<pre>Demo data size: 2.5G	demo_data
 </pre>
 </div>
 </div>
